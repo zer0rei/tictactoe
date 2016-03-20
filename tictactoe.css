@@ -1,0 +1,147 @@
+@import url(https://fonts.googleapis.com/css?family=Varela+Round);
+
+body {
+	background-color: #21303F;
+	color: #E8EEEF;
+}
+
+#game {
+	font-family: 'Varela Round', sans-serif;
+	width: 39em;
+	height: 50em;
+	margin: 5% auto;
+}
+
+.clear {
+	clear: left;
+}
+
+/* Board Layout */
+
+#board {
+	width: 100%;
+}
+
+button:focus {
+	outline: none;
+}
+
+#board button {
+	background: none;
+}
+
+.spot {
+	border: 1px solid #E8EEEF;
+	width: 13em;
+	height: 13em;
+	float: left;
+}
+
+.content {
+	font-size: 10em;
+}
+
+#spot1, #spot2, #spot3 {
+	border-top: none;
+}
+
+#spot1, #spot4, #spot7 {
+	border-left: none;
+}
+
+#spot3, #spot6, #spot9 {
+	border-right: none;
+}
+
+#spot7, #spot8, #spot9 {
+	border-bottom: none;
+}
+
+/* Menu Layout */
+
+#menu {
+	margin-top: 5em;
+}
+
+#menu button {
+	background-color: transparent;
+	border: 1px solid #E8EEEF;
+	width: 60px;
+	height: 40px;
+	padding: 0;
+	margin: 0;
+}
+
+#menu button:hover {
+	color: #9DA4A5;
+}
+
+#menu .btn-left {
+	border-right: none;
+}
+
+#menu .active {
+	background-color: #11161D;
+}
+
+#difficultySwitch button {
+	font-size: 0.5em;
+}
+
+/* MADIA QUERIES */
+@media screen and (max-width: 767px), screen and (max-height: 767px) {
+	#game {
+		width: 30em;
+		height: 40em;
+	}
+
+	.spot {
+		width: 10em;
+		height: 10em;
+	}
+
+	.content {
+		font-size: 7em;
+	}
+
+	#menu button {
+		width: 40px;
+		height: 30px;
+		font-size: 0.8em;
+	}
+
+	#difficultySwitch button {
+		font-size: 0.4em;
+	}
+
+}
+
+@media screen and (max-width: 479px), screen and (max-height: 479px) {
+	#game {
+		width: 21em;
+		height: 28em;
+	}
+
+	.spot {
+		width: 7em;
+		height: 7em;
+	}
+
+	.content {
+		font-size: 5em;
+	}
+
+	#menu {
+		margin-top: 3em;
+		font-size: 0.8em;
+	}
+
+	#menu button {
+		width: 33px;
+		height: 30px;
+	}
+
+	#difficultySwitch button {
+	}
+
+}
