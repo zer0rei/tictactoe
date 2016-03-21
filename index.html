@@ -5,16 +5,16 @@
 		<meta http-equiv="X-UA-Compatible" content="IE-edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Tic Tac Toe</title>
-		<link rel="stylesheet" href="includes/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="includes/bootstrap.min.css">
 		<link rel="stylesheet" href="tictactoe.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 		<script src="includes/jquery.min.js"></script>
-		<script src="includes/bootstrap/js/bootstrap.min.js"></script>
 		<script src="tictactoe.js"></script>
 	</head>
 	<body>
 		<div id="game">
 			<div id="board">
+				<button id="spot0" class="spot"><div class="content"></div></button>
 				<button id="spot1" class="spot"><div class="content"></div></button>
 				<button id="spot2" class="spot"><div class="content"></div></button>
 				<button id="spot3" class="spot"><div class="content"></div></button>
@@ -23,9 +23,9 @@
 				<button id="spot6" class="spot"><div class="content"></div></button>
 				<button id="spot7" class="spot"><div class="content"></div></button>
 				<button id="spot8" class="spot"><div class="content"></div></button>
-				<button id="spot9" class="spot"><div class="content"></div></button>
 			</div>
 			<div class="clear"></div>
+			<p id="resultMessage"></p>
 			<div id="menu" class="text-center">
 				<div id="difficultySwitch" class="col-xs-4">
 					<p>Difficulty</p>
@@ -45,11 +45,11 @@
 				<div id="beginSwitch" class="col-xs-4">
 					<p>Who starts?</p>
 					<div class="btn-group" role="group">
-						<button id="computerStarts" class="btn btn-left active">
-							<i class="fa fa-laptop"><!-- Laptop Icon --></i>
+						<button id="userStarts" class="btn btn-left active">
+							<i class="fa fa-user"><!-- Person Icon --></i>
 						</button>
-						<button id="userStarts" class="btn btn-right">
-							<span class="glyphicon glyphicon-user"><!-- Person Icon --></span>
+						<button id="computerStarts" class="btn btn-right">
+							<i class="fa fa-laptop"><!-- Laptop Icon --></i>
 						</button>
 					</div>
 				</div>
