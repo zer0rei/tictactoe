@@ -24,7 +24,7 @@ TicTacToe.prototype.start = function() {
 		var that = this;
 		setTimeout(function() {
 			that.computerPlay();
-		}, 300);
+		}, 200);
 	}
 }
 
@@ -42,8 +42,6 @@ TicTacToe.prototype.restart = function() {
 TicTacToe.prototype.setDifficulty = function(difficulty) {
 	this.difficulty = difficulty;
 	this.restart();
-	if (this.difficulty === "invincible")
-		this.printMessage("YOU WILL NEVER WIN");
 };
 
 TicTacToe.prototype.setUserWeapon = function(userWeapon) {
@@ -62,7 +60,7 @@ TicTacToe.prototype.doesUserStart = function(userStarts) {
 
 TicTacToe.prototype.userPlay = function(position) {
 	var that = this;
-	this.display.children(".spot").one("click", function() {
+	this.display.children(".spot").click(function() {
 		if (that.enabled) {
 			// Get the number in the end of spot id
 			var position = Number(this.id.replace(/^\D+/g, ""));
@@ -72,7 +70,7 @@ TicTacToe.prototype.userPlay = function(position) {
 				that.board[position] = that.userWeapon;
 				that.numPlays++;
 				that.generateBoard(that.board, that.display);
-				var done = that.checkResults(that.board, that.numPlays, that.userWeapon);
+				var done = that.checkResults(that.board, that.numPlays, that.userWeapon)[0];
 
 				// Done
 				if (done) {
@@ -103,10 +101,21 @@ TicTacToe.prototype.computerPlay = function() {
 		// 5% possibility of chosing random (making a mistake)
 		if (Math.random() < 0.05) {
 			do {
-				normalMove = Math.floor(Math.random() * 9);
+				normalMove = Math.floor(Math.random() * that.board.length);
 			} while (that.board[normalMove] !== "");
 			return normalMove;
 		}
+
+		// First Move
+		if (that.numPlays === 0)
+			return [0, 2, 4, 6, 8][Math.floor(Math.random() * 5)];
+
+		// Second Move
+		if (that.numPlays === 1)
+			if (that.board[4] === "")
+				return 4;
+			else
+				return [0, 2, 6, 8][Math.floor(Math.random() * 4)];
 
 		// Find the empty spot
 		function searchEmpty(i, j, k) {
@@ -120,15 +129,15 @@ TicTacToe.prototype.computerPlay = function() {
 
 		// Find move against any two identical spots
 		function findMove(testSequence) {
-			// Columns
-			for (var i = 0; i < 3; i++)
-				if ((that.board[i] + that.board[i + 3] + that.board[i + 6]) === testSequence)
-					return searchEmpty(i, i + 3, i + 6);
-
 			// Rows
 			for (var i = 0; i < 7; i += 3)
 				if ((that.board[i] + that.board[i + 1] + that.board[i + 2]) === testSequence)
 					return searchEmpty(i, i + 1, i + 2);
+
+			// Columns
+			for (var i = 0; i < 3; i++)
+				if ((that.board[i] + that.board[i + 3] + that.board[i + 6]) === testSequence)
+					return searchEmpty(i, i + 3, i + 6);
 
 			// Diagonal
 			if ((that.board[0] + that.board[4] + that.board[8]) === testSequence)
@@ -153,7 +162,7 @@ TicTacToe.prototype.computerPlay = function() {
 
 		// Random otherwise
 		do {
-			normalMove = Math.floor(Math.random() * 9);
+			normalMove = Math.floor(Math.random() * that.board.length);
 		} while (that.board[normalMove] !== "");
 		return normalMove;
 
@@ -161,7 +170,59 @@ TicTacToe.prototype.computerPlay = function() {
 
 	// PERFECT COMPUTER PLAY
 	function perfectComputerPlay() {
+		// Use the Minimax algorithm
+		var perfectMove;
 
+		// Calvulate score of board
+		function scoreGames(board, numPlays) {
+			if (that.checkResults(board, numPlays, that.computerWeapon)[1])
+				return 10 - numPlays;
+			else if (that.checkResults(board, numPlays, that.userWeapon)[1])
+				return numPlays - 10;
+			else
+				return 0;
+		}
+
+		// Run minimax
+		function minimax(board, numPlays, weapon) {
+			if (that.checkResults(board, numPlays, that.computerWeapon)[0] || that.checkResults(board, numPlays, that.userWeapon)[0])
+				return scoreGames(board, numPlays);
+
+			// Scores and Moves arrays
+			var movesArr = [];
+			var scoresArr = [];
+			// Switch Weapon
+			var switchWeapon = (weapon === that.userWeapon) ? that.computerWeapon : that.userWeapon;
+
+			for (var i = 0; i < board.length; i++)
+				if (board[i] === "") {
+					var possibleBoard = board.slice();
+					var possiblePlays = numPlays + 1;
+					possibleBoard[i] = weapon;
+					movesArr.push(i);
+					scoresArr.push(minimax(possibleBoard, possiblePlays, switchWeapon));
+				}
+
+			// Calculate (Max for computer) and (Min for player)
+			if (weapon === that.computerWeapon) {
+				var maxScoreIndex = scoresArr.indexOf(Math.max.apply(null, scoresArr));
+				perfectMove = movesArr[maxScoreIndex];
+				return scoresArr[maxScoreIndex];
+			}
+			else {
+				var minScoreIndex = scoresArr.indexOf(Math.min.apply(null, scoresArr));
+				perfectMove = movesArr[minScoreIndex];
+				return scoresArr[minScoreIndex];
+			}
+
+		}
+
+		// First Move
+		if (that.numPlays === 0)
+			return [0, 2, 4, 6, 8][Math.floor(Math.random() * 5)];
+
+		minimax(that.board, that.numPlays, that.computerWeapon);
+		return perfectMove;
 	}
 
 	// Find move for chosen difficulty
@@ -177,7 +238,7 @@ TicTacToe.prototype.computerPlay = function() {
 	this.board[move] = this.computerWeapon;
 	this.numPlays++;
 	this.generateBoard(this.board, this.display);
-	var done = this.checkResults(this.board, this.numPlays, this.computerWeapon);
+	var done = this.checkResults(this.board, this.numPlays, this.computerWeapon)[0];
 
 	if (done) {
 		this.enabled = false;
@@ -195,12 +256,13 @@ TicTacToe.prototype.computerPlay = function() {
 // // // // // // //
 
 TicTacToe.prototype.generateBoard = function(board, display) {
-	for (var i = 0; i < 9; i++) {
+	for (var i = 0; i < board.length; i++) {
 		var spot = display.children("#spot" + i);
 		spot.children(".content").html(board[i]);
 	}
 };
 
+// Check the result of board and return an array [game done? ,weapon user win?]
 TicTacToe.prototype.checkResults = function(board, numPlays, weapon) {
 	var winTest = weapon.repeat(3);
 	var done = false;
@@ -216,63 +278,82 @@ TicTacToe.prototype.checkResults = function(board, numPlays, weapon) {
 		}
 	}
 
-	// Check columns
-	for (var i = 0; i < 3; i++)
-		if (board[i] + board[i + 3] + board[i + 6] === winTest) {
-			blinkWinSequence(i, i+3, i+6);
-			done = true;
-			didWin = true;
-		}
-
 	// Check rows
 	for (var i = 0; i < 7; i += 3)
 		if (board[i] + board[i + 1] + board[i + 2] === winTest) {
-			blinkWinSequence(i, i+1, i+2);
+			if (board === this.board)
+				blinkWinSequence(i, i+1, i+2);
 			done = true;
 			didWin = true;
 		}
 
+	// Check columns
+	if (!done)
+		for (var i = 0; i < 3; i++)
+			if (board[i] + board[i + 3] + board[i + 6] === winTest) {
+				if (board === this.board)
+					blinkWinSequence(i, i+3, i+6);
+				done = true;
+				didWin = true;
+			}
+
 	// Check diagonal
-	if (board[0] + board[4] + board[8] === winTest) {
-		blinkWinSequence(0, 4, 8);
-		done = true;
-		didWin = true;
-	}
+	if (!done)
+		if (board[0] + board[4] + board[8] === winTest) {
+			if (board === this.board)
+				blinkWinSequence(0, 4, 8);
+			done = true;
+			didWin = true;
+		}
 
 	// Chack reverse diagonal
-	if (board[2] + board[4] + board[6] === winTest) {
-		blinkWinSequence(2, 4, 6);
-		done = true;
-		didWin = true;
-	}
+	if (!done)
+		if (board[2] + board[4] + board[6] === winTest) {
+			if (board === this.board)
+				blinkWinSequence(2, 4, 6);
+			done = true;
+			didWin = true;
+		}
 
 	// Print result message
-	if (this.difficulty === "normal") {
-		if (didWin && weapon === this.userWeapon)
-			this.printMessage("YOU WIN <i class='fa fa-thumbs-up'></i>");
-		else if (didWin && weapon === this.computerWeapon)
-			this.printMessage("I WIN <i class='fa fa-hand-peace-o'></i>");
-	}
-	else if (this.difficulty === "invincible") {
-		if (didWin)
-			this.printMessage("You won't beat me");
+	if (board === this.board) {
+		if (this.difficulty === "normal") {
+			if (didWin && weapon === this.userWeapon)
+				this.printMessage("YOU WIN <i class='fa fa-thumbs-up'></i>", 1500);
+			else if (didWin && weapon === this.computerWeapon)
+				this.printMessage("I WIN <i class='fa fa-hand-peace-o'></i>", 1500);
+		}
+		else if (this.difficulty === "invincible", 1500) {
+			if (didWin) {
+				var random = Math.random();
+				if (random < 0.25)
+					this.printMessage("You won't beat me", 1500);
+				else if (random > 0.25 && random < 0.4)
+					this.printMessage("I AM INVINCIBLE", 1500);
+				else if (random > 0.4 && random < 0.5)
+					this.printMessage("I NEVER LOSE", 1500);
+				else
+					this.printMessage("I WIN <i class='fa fa-hand-peace-o'></i>", 1500);
+			}
+		}
 	}
 
 	// Draw case
-	if (!didWin && numPlays === 9) {
-		this.printMessage("It's a DRAW <i class='fa fa-meh-o'></i>");
+	if (!didWin && numPlays === board.length) {
+		if (board === this.board)
+			this.printMessage("It's a DRAW <i class='fa fa-meh-o'></i>", 1500);
 		done = true;
 	}
 
-	return done;
+	return [done, didWin];
 
 };
 
-TicTacToe.prototype.printMessage = function(message) {
+TicTacToe.prototype.printMessage = function(message, duration) {
 	$("#resultMessage").html(message);
 	setTimeout(function() {
 		$("#resultMessage").html("");
-	}, 1500);
+	}, duration);
 }
 
 // END TICTACTOE OBJECT
