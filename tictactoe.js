@@ -223,9 +223,17 @@ TicTacToe.prototype.computerPlay = function() {
 
 		}
 
+		// First and Second move for optimization
 		// First Move
 		if (that.numPlays === 0)
 			return [0, 2, 4, 6, 8][Math.floor(Math.random() * 5)];
+
+		// Second Move
+		if (that.numPlays === 1)
+			if (that.board[4] === "")
+				return 4;
+			else
+				return [0, 2, 6, 8][Math.floor(Math.random() * 4)];
 
 		// Other Moves
 		minimax(that.board, that.numPlays, that.computerWeapon);
