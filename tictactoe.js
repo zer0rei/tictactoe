@@ -151,12 +151,12 @@ TicTacToe.prototype.computerPlay = function() {
 		}
 
 		// Search for attacking move
-		normalMove = findMove(that.computerWeapon.repeat(2));
+		normalMove = findMove(that.computerWeapon + that.computerWeapon);
 		if (normalMove !== -1)
 			return normalMove;
 
 		// Search for defending move
-		normalMove = findMove(that.userWeapon.repeat(2));
+		normalMove = findMove(that.userWeapon + that.userWeapon);
 		if (normalMove !== -1)
 			return normalMove;
 
@@ -271,7 +271,7 @@ TicTacToe.prototype.generateBoard = function(board, display) {
 
 // Check the result of board and return an array [game done? ,weapon user win?]
 TicTacToe.prototype.checkResults = function(board, numPlays, weapon) {
-	var winTest = weapon.repeat(3);
+	var winTest = weapon + weapon + weapon;
 	var done = false;
 	var didWin = false;
 	var that = this;
