@@ -172,6 +172,8 @@ TicTacToe.prototype.computerPlay = function() {
 	function perfectComputerPlay() {
 		// Use the Minimax algorithm
 		var perfectMove;
+		var movesArr = [];
+		var scoresArr = [];
 
 		// Calculate score of board
 		function scoreGames(board, numPlays) {
@@ -191,13 +193,17 @@ TicTacToe.prototype.computerPlay = function() {
 			// Scores and Moves arrays
 			var movesArr = [];
 			var scoresArr = [];
+			// Board copy
+			var possibleBoard;
+			var possiblePlays;
+
 			// Switch Weapon
 			var switchWeapon = (weapon === that.userWeapon) ? that.computerWeapon : that.userWeapon;
 
 			for (var i = 0; i < board.length; i++)
 				if (board[i] === "") {
-					var possibleBoard = board.slice();
-					var possiblePlays = numPlays + 1;
+					possibleBoard = board.slice();
+					possiblePlays = numPlays + 1;
 					possibleBoard[i] = weapon;
 					movesArr.push(i);
 					scoresArr.push(minimax(possibleBoard, possiblePlays, switchWeapon));
