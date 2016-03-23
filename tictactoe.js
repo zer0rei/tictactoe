@@ -173,7 +173,7 @@ TicTacToe.prototype.computerPlay = function() {
 		// Use the Minimax algorithm
 		var perfectMove;
 
-		// Calvulate score of board
+		// Calculate score of board
 		function scoreGames(board, numPlays) {
 			if (that.checkResults(board, numPlays, that.computerWeapon)[1])
 				return 10 - numPlays;
@@ -221,6 +221,7 @@ TicTacToe.prototype.computerPlay = function() {
 		if (that.numPlays === 0)
 			return [0, 2, 4, 6, 8][Math.floor(Math.random() * 5)];
 
+		// Other Moves
 		minimax(that.board, that.numPlays, that.computerWeapon);
 		return perfectMove;
 	}
@@ -376,29 +377,29 @@ $(document).ready(function() {
 
 	// Menu
 
-	// Oponent
+	// Oponnent
 
-	function invincibleOponent() {
-		$("#normalOponent").removeClass("active");
-		$("#invincibleOponent").addClass("active");
+	function invincibleOponnent() {
+		$("#normalOponnent").removeClass("active");
+		$("#invincibleOponnent").addClass("active");
 		game.setDifficulty("invincible");
 
 		// Enable click to the other part of the switch
-		$("#normalOponent").one('click', normalOponent);
+		$("#normalOponnent").one('click', normalOponnent);
 
 	}
 
-	function normalOponent() {
-		$("#invincibleOponent").removeClass("active");
-		$("#normalOponent").addClass("active");
+	function normalOponnent() {
+		$("#invincibleOponnent").removeClass("active");
+		$("#normalOponnent").addClass("active");
 		game.setDifficulty("normal");
 
 		// Enable click to the other part of the switch
-		$("#invincibleOponent").one('click', invincibleOponent);
+		$("#invincibleOponnent").one('click', invincibleOponnent);
 
 	}
 
-	$("#invincibleOponent").one('click', invincibleOponent);
+	$("#invincibleOponnent").one('click', invincibleOponnent);
 
 	// Who starts
 
