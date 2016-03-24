@@ -8,7 +8,7 @@ body {
 #game {
 	font-family: 'Varela Round', sans-serif;
 	width: 39em;
-	height: 50em;
+	height: 52em;
 	margin: 5% auto;
 }
 
@@ -92,11 +92,21 @@ button:focus {
 	font-size: 0.5em;
 }
 
+#credit {
+	opacity: 0.8;
+	position: relative;
+	top: 1em;
+}
+
+#credit a {
+	color: white;
+}
+
 /* MADIA QUERIES */
 @media screen and (max-width: 767px), screen and (max-height: 767px) {
 	#game {
 		width: 30em;
-		height: 40em;
+		height: 42em;
 	}
 
 	.spot {
@@ -124,10 +134,10 @@ button:focus {
 
 }
 
-@media screen and (max-width: 479px), screen and (max-height: 479px) {
+@media screen and (max-width: 479px), screen and (max-height: 650px) {
 	#game {
 		width: 21em;
-		height: 28em;
+		height: 29em;
 	}
 
 	.spot {

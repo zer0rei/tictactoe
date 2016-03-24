@@ -379,12 +379,16 @@ TicTacToe.prototype.printMessage = function(message, duration) {
 $(document).ready(function() {
 	// Layout
 
-	// Margin Top
-	var wrapperMarginTop = ($(window).height() - $("#game").height()) / 2;
-	if (wrapperMarginTop > 10) {
-		$("#game").css("margin-top", wrapperMarginTop);
-		$("#game").css("margin-bottom", wrapperMarginTop);
-	}
+	$(window).resize(function() {
+		// Margin Top
+		var wrapperMarginTop = ($(window).height() - $("#game").height()) / 2;
+		if (wrapperMarginTop > 10) {
+			$("#game").css("margin-top", wrapperMarginTop);
+			$("#game").css("margin-bottom", wrapperMarginTop);
+		}
+	});
+
+	$(window).resize();
 
 	// TIC TAC TOE Logic
 	// // // // // // //
