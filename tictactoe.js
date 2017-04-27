@@ -26,7 +26,7 @@ TicTacToe.prototype.start = function() {
 			that.computerPlay();
 		}, 200);
 	}
-}
+};
 
 TicTacToe.prototype.restart = function() {
 	this.board = ["", "", "", "", "" ,"" ,"" ,"", ""];
@@ -129,13 +129,14 @@ TicTacToe.prototype.computerPlay = function() {
 
 		// Find move against any two identical spots
 		function findMove(testSequence) {
+			var i;
 			// Rows
-			for (var i = 0; i < 7; i += 3)
+			for (i = 0; i < 7; i += 3)
 				if ((that.board[i] + that.board[i + 1] + that.board[i + 2]) === testSequence)
 					return searchEmpty(i, i + 1, i + 2);
 
 			// Columns
-			for (var i = 0; i < 3; i++)
+			for (i = 0; i < 3; i++)
 				if ((that.board[i] + that.board[i + 3] + that.board[i + 6]) === testSequence)
 					return searchEmpty(i, i + 3, i + 6);
 
@@ -283,18 +284,19 @@ TicTacToe.prototype.checkResults = function(board, numPlays, weapon) {
 	var done = false;
 	var didWin = false;
 	var that = this;
+	var i;
 
 	// Blink the win sequence
 	function blinkWinSequence(x, y, z) {
 		var target = that.display.children("#spot" + x + ", #spot" + y + ", #spot" + z).children(".content");
-		for (var i = 0; i < 2; i++) {
+		for (i = 0; i < 2; i++) {
 			target.delay(100).hide(0);
 			target.delay(100).show(0);
 		}
 	}
 
 	// Check rows
-	for (var i = 0; i < 7; i += 3)
+	for (i = 0; i < 7; i += 3)
 		if (board[i] + board[i + 1] + board[i + 2] === winTest) {
 			if (board === this.board)
 				blinkWinSequence(i, i+1, i+2);
@@ -304,7 +306,7 @@ TicTacToe.prototype.checkResults = function(board, numPlays, weapon) {
 
 	// Check columns
 	if (!done)
-		for (var i = 0; i < 3; i++)
+		for (i = 0; i < 3; i++)
 			if (board[i] + board[i + 3] + board[i + 6] === winTest) {
 				if (board === this.board)
 					blinkWinSequence(i, i+3, i+6);
@@ -369,7 +371,7 @@ TicTacToe.prototype.printMessage = function(message, duration) {
 	setTimeout(function() {
 		$("#resultMessage").html("");
 	}, duration);
-}
+};
 
 // END TICTACTOE OBJECT
 
