@@ -33,7 +33,9 @@ TicTacToe.prototype.restart = function() {
 	this.numPlays = 0;
 	this.enabled = true;
 	this.generateBoard(this.board, this.display);
-	this.start();
+  setTimeout(function() {
+    this.start();
+  }, 200);
 };
 
 // SET SETTINGS
