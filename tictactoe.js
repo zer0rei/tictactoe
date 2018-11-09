@@ -29,12 +29,13 @@ TicTacToe.prototype.start = function() {
 };
 
 TicTacToe.prototype.restart = function() {
+  var that = this;
 	this.board = ["", "", "", "", "" ,"" ,"" ,"", ""];
 	this.numPlays = 0;
 	this.enabled = true;
 	this.generateBoard(this.board, this.display);
   setTimeout(function() {
-    this.start();
+    that.start();
   }, 200);
 };
 
@@ -267,7 +268,6 @@ TicTacToe.prototype.computerPlay = function() {
 	else {
 		this.userPlay();
 	}
-
 };
 
 // RESULTS SETTINGS
@@ -365,7 +365,6 @@ TicTacToe.prototype.checkResults = function(board, numPlays, weapon) {
 	}
 
 	return [done, didWin];
-
 };
 
 TicTacToe.prototype.printMessage = function(message, duration) {
